@@ -19,7 +19,6 @@ function checkLogin() {
   const logoutButton = document.getElementById("logoutButton");
   const settingsButton = document.getElementById("settingsButton");
 
-
   if (username && !isGuest) {
     welcomeUser.textContent = `Logged in as: ${username}`;
     saveButton.style.display = "inline-block";
@@ -50,7 +49,6 @@ function logout() {
 }
 
 document.addEventListener("DOMContentLoaded", checkLogin);
-
 
 document.addEventListener('DOMContentLoaded', () => {
   checkLogin();

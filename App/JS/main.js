@@ -163,8 +163,6 @@ function showInfo() {
   overlay.classList.remove("hidden");
 }
 
-document.addEventListener("DOMContentLoaded", checkLogin);
-
 function checkLogin() {
   const username = localStorage.getItem("username");
   const isGuest = localStorage.getItem("isGuest") === "true";
@@ -184,8 +182,6 @@ function logout() {
   localStorage.removeItem("isGuest");
   window.location.href = "index.html";
 }
-
-document.addEventListener("DOMContentLoaded", checkLogin);
 
 document.addEventListener("DOMContentLoaded", checkLogin);
 
@@ -250,17 +246,24 @@ function closeSettings() {
 }
 
 function saveSettings() {
+  const username = localStorage.getItem('username');
+  const isGuest = localStorage.getItem('isGuest') === 'true';
+
   const darkMode = document.getElementById('darkModeToggle').checked;
+  const selectedFont = document.getElementById('fontSelect').value;
+
+  if (!isGuest && username) {
+    localStorage.setItem(`settings_darkMode_${username}`, darkMode);
+    localStorage.setItem(`settings_font_${username}`, selectedFont);
+  }
+
   if (darkMode) {
     document.body.classList.add('dark-mode');
   } else {
     document.body.classList.remove('dark-mode');
   }
 
-  const selectedFont = document.getElementById('fontSelect').value;
   document.body.style.fontFamily = selectedFont;
-  localStorage.setItem('settings_darkMode', darkMode);
-  localStorage.setItem('settings_font', selectedFont);
 
   showToast('Settings saved!');
   closeSettings();
@@ -302,8 +305,37 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+window.addEventListener('DOMContentLoaded', () => {
+  const username = localStorage.getItem('username');
+  const isGuest = localStorage.getItem('isGuest') === 'true';
+
+  if (isGuest) {
+    document.body.classList.remove('dark-mode');
+    document.body.style.fontFamily = "'Snowburst One', system-ui";
+    document.getElementById('darkModeToggle').checked = false;
+    document.getElementById('fontSelect').value = "'Snowburst One', system-ui, sans-serif";
+  } else if (username) {
+    const darkMode = localStorage.getItem(`settings_darkMode_${username}`) === 'true';
+    const font = localStorage.getItem(`settings_font_${username}`);
+
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+      document.getElementById('darkModeToggle').checked = true;
+    } else {
+      document.body.classList.remove('dark-mode');
+      document.getElementById('darkModeToggle').checked = false;
+    }
+
+    if (font) {
+      document.body.style.fontFamily = font;
+      document.getElementById('fontSelect').value = font;
+    } else {
+      document.body.style.fontFamily = "'Snowburst One', system-ui";
+      document.getElementById('fontSelect').value = "'Snowburst One', system-ui, sans-serif";
+    }
+  }
+});
 
 window.openSettings = openSettings;
 window.closeSettings = closeSettings;
 window.saveSettings = saveSettings;
-
