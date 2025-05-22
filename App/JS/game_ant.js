@@ -8,5 +8,4 @@ function stepAnt() {
     else if (ant.dir === 2) ant.y = (ant.y + 1) % size;
     else if (ant.dir === 3) ant.x = (ant.x - 1 + size) % size;
     antSteps++;
-  }
-  
+}
