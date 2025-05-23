@@ -22,6 +22,10 @@ button, select, input, textarea, label {
   font-size: inherit !important
 }
 
+#stats {
+  font-size: inherit !important
+}
+
 header {
   background-color: #333;
   color: white;
@@ -422,6 +426,10 @@ body.dark-mode #settingsModal h2,
 body.dark-mode #settingsModal button,
 body.dark-mode #settingsModal input[type="checkbox"] {
   color: #ddd;
+}
+
+body.dark-mode #infoModal {
+  color: black;
 }
 
 body.dark-mode #historyMenu,

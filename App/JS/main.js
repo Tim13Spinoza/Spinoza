@@ -12,6 +12,9 @@ let speed = 100;
 
 function selectGame(game) {
     clearInterval(interval);
+
+    speed = 100;
+
     currentGame = game;
     gameState = Array.from({ length: size }, () => Array(size).fill(0));
     antSteps = 0;
@@ -29,15 +32,19 @@ function selectGame(game) {
             gameState[x][y] = 2;
         }
     }
-    paused = false;
+    paused = true;
+    drawGrid();
     interval = setInterval(step, speed);
 
     document.getElementById("infoTitle").textContent = "";
     document.getElementById("infoText").textContent = "";
     document.getElementById("infoModal").classList.add("hidden");
     document.getElementById("overlay").classList.add("hidden");
-}
 
+    const pauseButton = document.getElementById("playBtn");
+    if (pauseButton) pauseButton.textContent = "Play";
+    updateStats();
+}
 
 function initializeGame() {
     for (let x = 0; x < size; x++) {
@@ -55,10 +62,6 @@ function step() {
     else if (currentGame === 'forest') stepForest();
     drawGrid();
     updateStats();
-}
-
-function togglePause() {
-    paused = !paused;
 }
 
 function drawGrid() {
@@ -262,30 +265,38 @@ function closeSettings() {
 }
 
 function saveSettings() {
-  const username = localStorage.getItem('username');
-  const isGuest = localStorage.getItem('isGuest') === 'true';
+    const username = localStorage.getItem('username');
+    const isGuest = localStorage.getItem('isGuest') === 'true';
 
-  const darkMode = document.getElementById('darkModeToggle').checked;
-  const selectedFont = document.getElementById('fontSelect').value;
-  const fontSizeMultiplier = parseFloat(document.getElementById('fontSizeSelect').value);
+    const darkMode = document.getElementById('darkModeToggle').checked;
+    const selectedFont = document.getElementById('fontSelect').value;
+    const fontSizeMultiplier = parseFloat(document.getElementById('fontSizeSelect').value);
+    const selectedLanguage = document.getElementById('languageSelect').value;
 
-  if (!isGuest && username) {
-    localStorage.setItem(`settings_darkMode_${username}`, darkMode);
-    localStorage.setItem(`settings_font_${username}`, selectedFont);
-    localStorage.setItem(`settings_fontSizeMultiplier_${username}`, fontSizeMultiplier);
-  }
+    if (username && !isGuest) {
+        localStorage.setItem(`settings_darkMode_${username}`, darkMode);
+        localStorage.setItem(`settings_font_${username}`, selectedFont);
+        localStorage.setItem(`settings_fontSizeMultiplier_${username}`, fontSizeMultiplier);
+        localStorage.setItem(`settings_language_${username}`, selectedLanguage);
+    } else if (isGuest) {
+        localStorage.setItem('settings_darkMode', darkMode);
+        localStorage.setItem('settings_font', selectedFont);
+        localStorage.setItem('settings_fontSizeMultiplier', fontSizeMultiplier);
+        localStorage.setItem('settings_language', selectedLanguage);
+    }
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
 
-  if (darkMode) {
-    document.body.classList.add('dark-mode');
-  } else {
-    document.body.classList.remove('dark-mode');
-  }
+    document.body.style.fontFamily = selectedFont;
+    document.documentElement.style.fontSize = `${fontSizeMultiplier}em`;
 
-  document.body.style.fontFamily = selectedFont;
-  document.documentElement.style.fontSize = `${fontSizeMultiplier}em`;
+    applyLanguage(selectedLanguage);
 
-  showToast('Settings saved!');
-  closeSettings();
+    closeSettings();
+    showToast('Settings saved!');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -329,10 +340,30 @@ window.addEventListener('DOMContentLoaded', () => {
     const isGuest = localStorage.getItem('isGuest') === 'true';
 
     if (isGuest) {
-        document.body.classList.remove('dark-mode');
-        document.body.style.fontFamily = "'Snowburst One', system-ui";
-        document.getElementById('darkModeToggle').checked = false;
-        document.getElementById('fontSelect').value = "'Snowburst One', system-ui, sans-serif";
+        const darkMode = localStorage.getItem('settings_darkMode') === 'false';
+        const font = localStorage.getItem('settings_font');
+        const fontSize = localStorage.getItem('settings_fontSizeMultiplier');
+
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+            document.getElementById('darkModeToggle').checked = true;
+        } else {
+            document.body.classList.remove('dark-mode');
+            document.getElementById('darkModeToggle').checked = false;
+        }
+
+        if (font) {
+            document.body.style.fontFamily = font;
+            document.getElementById('fontSelect').value = font;
+        }
+
+        if (fontSize) {
+            document.documentElement.style.fontSize = `${fontSize}em`;
+            const fontSizeSelect = document.getElementById('fontSizeSelect');
+            if (fontSizeSelect) {
+                fontSizeSelect.value = fontSize;
+            }
+        }
     } else if (username) {
         const darkMode = localStorage.getItem(`settings_darkMode_${username}`) === 'true';
         const font = localStorage.getItem(`settings_font_${username}`);
@@ -388,6 +419,7 @@ function speedUpButton() {
         clearInterval(interval);
         interval = setInterval(step, speed);
     }
+    updateStats();
 }
 
 function slowDownButton() {
@@ -396,7 +428,122 @@ function slowDownButton() {
         clearInterval(interval);
         interval = setInterval(step, speed);
     }
+    updateStats();
 }
+
+function togglePause() {
+    paused = !paused;
+    const pauseButton = document.getElementById("playBtn");
+    pauseButton.textContent = paused ? "Play" : "Pause";
+    updateStats();
+}
+
+const translations = {
+    en: {
+        title: "Cellular Automata Games",
+        login: "Login",
+        logout: "Logout",
+        settings: "Settings ⚙️",
+
+        gameButtons: {
+            life: "Game of Life",
+            brian: "Brian's Brain",
+            ant: "Langton's Ant",
+            forest: "Forest Fire Model",
+            save: "Save",
+            history: "Show History",
+            info: "ℹ️ Info"
+        },
+
+        controls: {
+            slowDown: "Slow Down",
+            pause: "Pause/Resume",
+            reset: "Reset",
+            speedUp: "Speed Up"
+        },
+
+        settingsHeader: "Settings",
+        darkMode: "Enable Dark Mode",
+        selectFont: "Select Font:",
+        fontSizeMultiplier: "Font Size Multiplier:",
+        languageSelect: "Language:",
+        saveSettings: "Save Settings",
+        close: "Close",
+        settingsSaved: "Settings saved!",
+        welcome: "Welcome, "
+    },
+    hr: {
+        title: "Igre Ćelijskih Automata",
+        login: "Prijava",
+        logout: "Odjava",
+        settings: "Postavke ⚙️",
+
+        gameButtons: {
+            life: "Igra života",
+            brian: "Brianov mozak",
+            ant: "Langtonov mrav",
+            forest: "Model šumskog požara",
+            save: "Spremi",
+            history: "Prikaži povijest",
+            info: "ℹ️ Info"
+        },
+
+        controls: {
+            slowDown: "Uspori",
+            pause: "Pauziraj/Nastavi",
+            reset: "Resetiraj",
+            speedUp: "Ubrzaj"
+        },
+
+        settingsHeader: "Postavke",
+        darkMode: "Uključi tamni način",
+        selectFont: "Odaberi font:",
+        fontSizeMultiplier: "Veličina fonta:",
+        languageSelect: "Jezik:",
+        saveSettings: "Spremi postavke",
+        close: "Zatvori",
+        settingsSaved: "Postavke su spremljene!",
+        welcome: "Dobrodošao, "
+    }
+};
+
+function applyLanguage(lang) {
+    const t = translations[lang];
+
+    document.querySelector('h1').textContent = t.title;
+    document.getElementById('loginButton').textContent = t.login;
+    document.getElementById('logoutButton').textContent = t.logout;
+    document.getElementById('settingsButton').textContent = t.settings;
+
+    const controls = document.querySelector('.controls').children;
+    controls[0].textContent = t.gameButtons.life;
+    controls[1].textContent = t.gameButtons.brian;
+    controls[2].textContent = t.gameButtons.ant;
+    controls[3].textContent = t.gameButtons.forest;
+    controls[4].textContent = t.gameButtons.save;
+    controls[5].textContent = t.gameButtons.history;
+    controls[6].textContent = t.gameButtons.info;
+
+    const controlBtns = document.querySelector('.controlBtn').children;
+    controlBtns[0].textContent = t.controls.slowDown;
+    controlBtns[1].textContent = t.controls.pause;
+    controlBtns[2].textContent = t.controls.reset;
+    controlBtns[3].textContent = t.controls.speedUp;
+
+    const settingsModal = document.getElementById('settingsModal');
+    settingsModal.querySelector('h2').textContent = t.settingsHeader;
+    settingsModal.querySelector('label[for="darkModeToggle"]').textContent = t.darkMode;
+    settingsModal.querySelector('label[for="fontSelect"]').childNodes[0].textContent = t.selectFont;
+    settingsModal.querySelector('label[for="fontSizeSelect"]').childNodes[0].textContent = t.fontSizeMultiplier;
+    settingsModal.querySelector('label[for="languageSelect"]').childNodes[0].textContent = t.languageSelect;
+    settingsModal.querySelector('button[onclick="saveSettings()"]').textContent = t.saveSettings;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+    document.getElementById('languageSelect').value = savedLang;
+    applyLanguage(savedLang);
+});
 
 window.openSettings = openSettings;
 window.closeSettings = closeSettings;

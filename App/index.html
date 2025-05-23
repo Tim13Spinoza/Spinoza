@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Snowburst+One&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="/CSS/IndexStyles.css" />
+	<link rel="stylesheet" href="CSS/IndexStyles.css" />
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 		</div>
 		<div class="header-right">
 			<button id="loginButton" onclick="handleLoginClick()">Login</button>
-			<button id="settingsButton" onclick="openSettings()" style="display:none;">Settings ⚙️</button>
+			<button id="settingsButton" onclick="openSettings()">Settings ⚙️</button>
 			<button id="logoutButton" onclick="logout()" style="display:none;">Logout</button>
 		</div>
 	</header>
@@ -32,7 +32,6 @@
 			<button onclick="selectGame('brian')">Brian's Brain</button>
 			<button onclick="selectGame('ant')">Langton's Ant</button>
 			<button onclick="selectGame('forest')">Forest Fire Model</button>
-			<button onclick="togglePause()">Pause/Resume</button>
 			<button id="saveButton" onclick="saveGame()">Save</button>
 			<button id="historyButton" onclick="showHistory()">Show History</button>
 			<button onclick="showInfo()">ℹ️ Info</button>
@@ -50,6 +49,7 @@
 
 		<div class="controlBtn">
 			<button onclick="slowDownButton()">Slow Down</button>
+			<button id="playBtn" onclick="togglePause()">Pause/Resume</button>
 			<button onclick="resetButton()">Reset</button>
 			<button onclick="speedUpButton()">Speed Up</button>
 		</div>
@@ -64,7 +64,8 @@
 			<button class="close-btn" onclick="closeSettings()">×</button>
 			<h2>Settings</h2>
 			<label>
-				<input type="checkbox" id="darkModeToggle" /> Enable Dark Mode
+				<label for="darkModeToggle">Enable Dark Mode</label>
+				<input type="checkbox" id="darkModeToggle" />
 			</label>
 
 			<label for="fontSelect" style="margin-top: 10px; display: block;">
@@ -85,12 +86,19 @@
 			<label for="fontSizeSelect" style="margin-top: 10px; display: block;">
 				Font Size Multiplier:
 				<select id="fontSizeSelect">
-					<option value="1">Default</option>
+					<option value="1">Normal</option>
 					<option value="1.5">Big</option>
 					<option value="0.5">Small</option>
 				</select>
 			</label>
 
+			<label for="languageSelect" style="margin-top: 10px; display: block;">
+				Language:
+				<select id="languageSelect">
+					<option value="en">English</option>
+					<option value="hr">Hrvatski</option>
+				</select>
+			</label>
 
 			<button onclick="saveSettings()">Save Settings</button>
 		</div>
