@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cellular Automata Games</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Snowburst+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="CSS/IndexStyles.css" />
+</head>
+
+
+<body>
+	<header>
+		<div class="header-left">
+			<h1>Cellular Automata Games</h1>
+		</div>
+		<div class="header-center">
+			<span id="welcomeUser"></span>
+		</div>
+		<div class="header-right">
+			<button id="loginButton" onclick="handleLoginClick()">Login</button>
+			<button id="settingsButton" onclick="openSettings()">Settings ⚙️</button>
+			<button id="logoutButton" onclick="logout()" style="display:none;">Logout</button>
+		</div>
+	</header>
+
+	<main>
+		<div class="controls">
+			<button onclick="selectGame('life')">Game of Life</button>
+			<button onclick="selectGame('brian')">Brian's Brain</button>
+			<button onclick="selectGame('ant')">Langton's Ant</button>
+			<button onclick="selectGame('forest')">Forest Fire Model</button>
+			<button id="saveButton" onclick="saveGame()">Save</button>
+			<button id="historyButton" onclick="showHistory()">Show History</button>
+			<button onclick="showInfo()">ℹ️ Info</button>
+		</div>
+
+		<div class="game-area">
+			<canvas id="gameCanvas" width="600" height="600"></canvas>
+			<div id="historyMenu" class="hidden">
+				<h3>Saved Games</h3>
+				<ul id="historyList"></ul>
+			</div>
+		</div>
+
+		<div id="stats"></div>
+
+		<div class="controlBtn">
+			<button onclick="slowDownButton()">Slow Down</button>
+			<button id="playBtn" onclick="togglePause()">Pause/Resume</button>
+			<button onclick="resetButton()">Reset</button>
+			<button onclick="speedUpButton()">Speed Up</button>
+		</div>
+
+		<div id="infoModal" class="modal hidden">
+			<button class="close-btn" onclick="closeInfo()">×</button>
+			<h2 id="infoTitle"></h2>
+			<p id="infoText"></p>
+		</div>
+
+		<div id="settingsModal" class="modal hidden">
+			<button class="close-btn" onclick="closeSettings()">×</button>
+			<h2>Settings</h2>
+			<label>
+				<label for="darkModeToggle">Enable Dark Mode</label>
+				<input type="checkbox" id="darkModeToggle" />
+			</label>
+
+			<label for="fontSelect" style="margin-top: 10px; display: block;">
+				Select Font:
+				<select id="fontSelect">
+					<option value="'Snowburst One', system-ui, sans-serif">Snowburst One</option>
+					<option value="'Arial', sans-serif">Arial</option>
+					<option value="'Courier New', monospace">Courier New</option>
+					<option value="'Times New Roman', serif">Times New Roman</option>
+					<option value="'Georgia', serif">Georgia</option>
+					<option value="'Verdana', sans-serif">Verdana</option>
+					<option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+					<option value="'Impact', sans-serif">Impact</option>
+					<option value="'Comic Sans MS', cursive, sans-serif">Comic Sans MS</option>
+				</select>
+			</label>
+
+			<label for="fontSizeSelect" style="margin-top: 10px; display: block;">
+				Font Size Multiplier:
+				<select id="fontSizeSelect">
+					<option value="1">Normal</option>
+					<option value="1.5">Big</option>
+					<option value="0.5">Small</option>
+				</select>
+			</label>
+
+			<label for="languageSelect" style="margin-top: 10px; display: block;">
+				Language:
+				<select id="languageSelect">
+					<option value="en">English</option>
+					<option value="hr">Hrvatski</option>
+				</select>
+			</label>
+
+			<button onclick="saveSettings()">Save Settings</button>
+		</div>
+
+		<div id="settingsOverlay" class="overlay hidden" onclick="closeSettings()"></div>
+
+		<div id="overlay" class="overlay hidden" onclick="closeInfo()"></div>
+		<div id="toast" class="toast hidden"></div>
+
+	</main>
+
+	<script src="JS/login.js" defer></script>
+	<script src="JS/history.js" defer></script>
+	<script src="JS/game_life.js" defer></script>
+	<script src="JS/game_brian.js" defer></script>
+	<script src="JS/game_ant.js" defer></script>
+	<script src="JS/game_forest.js" defer></script>
+	<script src="JS/main.js" defer></script>
+</body>
+
+</html>
