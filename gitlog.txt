@@ -1,0 +1,36 @@
+* commit 6099cf28fc493f1fa8747de4a7bf7b9e2c5f316e (HEAD -> main, origin/main, origin/HEAD)
+| Author: isokcev <161632535+isokcev@users.noreply.github.com>
+| Date:   Thu Jun 19 18:55:05 2025 +0200
+| 
+|     update specifikacija
+| 
+* commit 2830336597987c36dd80fd87730396d07cc8dbef
+| Author: Adrian Patrik Šaban <asaban1@algebra.hr>
+| Date:   Wed Jun 11 20:19:43 2025 +0200
+| 
+|     Added features
+| 
+* commit 47c3a781bce08144ee02d3fad19cb0b9c48bc8cd
+| Author: mostoj2 <mostoj2@algebra.hr>
+| Date:   Wed Jun 11 19:45:27 2025 +0200
+| 
+|     Bug fixes
+| 
+* commit 2efc6c964dca41fd4d6028609e2b103ad03fb608
+| Author: ikrajan <ivankrajancic50@gmail.com>
+| Date:   Wed Jun 11 19:19:52 2025 +0200
+| 
+|     Added README
+| 
+* commit da89933411aba56d90dbc0419517f5e3d5adbd22
+| Author: ikrajan <ivankrajancic50@gmail.com>
+| Date:   Wed Jun 11 19:18:25 2025 +0200
+| 
+|     Bug fixes
+| 
+* commit 538b7d637a40630359cf37544a20fded4fbfc2e6
+| Author: ikrajan <office11@ucione.local>
+| Date:   Wed Jun 11 19:15:26 2025 +0200
+| 
+|     Bug fix
+| 
